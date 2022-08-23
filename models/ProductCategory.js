@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const categorySchema = new schema({
-  shopOwner: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
@@ -15,6 +15,10 @@ const categorySchema = new schema({
     type: String,
     default: "",
     trim: true,
+  },
+  image: {
+    type: String,
+    default: ""
   },
   createdAt: {
     type: Date,

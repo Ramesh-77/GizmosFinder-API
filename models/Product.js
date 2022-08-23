@@ -2,10 +2,22 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const productSchema = new schema({
-  shopOwner: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  name: {
+    type: mongoose.Schema.Types.String, 
+    ref: "User"
+  },
+  phone: {
+    type: mongoose.Schema.Types.Number, 
+    ref: "User"
+  },
+  email: {
+    type: mongoose.Schema.Types.String, 
+    ref: "User"
+  }, 
   pname: {
     type: String,
     default: "",
@@ -26,10 +38,9 @@ const productSchema = new schema({
     default: 1,
     trim: true,
   },
-  category: {
+  categoryName: {
     type: String,
   },
-
   image: {
     type: String,
     default: "",

@@ -25,7 +25,7 @@ exports.userRegister = async (req, res) => {
     let hashed_pw = await bcrypt.hash(req.body.password, salt);
     user = await new User({
       ...req.body,
-      image: req.file.path,
+      // image: req.file.path,
       password: hashed_pw,
     }).save();
 
@@ -114,7 +114,7 @@ exports.userLogin = async (req, res) => {
           user: user._id,
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
-        const url = `${process.env.BASE_URL}customer/register/${user._id}/verify/${token.token}`;
+        const url = `${process.env.BASE_URL}user/register/${user._id}/verify/${token.token}`;
         await sendEmail(user.email, "Verify Email", url);
       }
       return res
@@ -122,9 +122,23 @@ exports.userLogin = async (req, res) => {
         .send({ message: "An Email sent to your account, please verify" });
     }
 
-    let token = await jwt.sign({ user: this }, process.env.JWTPRIVATEKEY, {
-      expiresIn: "7d",
-    });
+    let token = await jwt.sign(
+      {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        emailVerify: user.email_verified,
+        role: user.role,
+        phone: user.phone,
+        createdAt: user.createdAt,
+      },
+      process.env.JWTPRIVATEKEY,
+      {
+        expiresIn: "7d",
+      }
+    );
+    console.log(token);
     res.status(200).send({
       message: "login success",
       data: {
@@ -294,6 +308,8 @@ exports.facebookLogin = (req, res) => {
                     image: data.image,
                     role: data.role,
                     email_verified: data.email_verified,
+                   
+
                   },
                   process.env.JWTPRIVATEKEY,
                   {

@@ -10,7 +10,7 @@ const upload = require("../Uploads/upload");
 
 // all routes for user
 router.post("/register", upload.single("image"), userRegister);
-router.get("/register:id/verify/:token", emailVerification);
+router.get("/register/:id/verify/:token", emailVerification);
 router.post("/login", userLogin);
 router.post("/google-login", googleLogin);
 router.post("/facebook-login", facebookLogin);

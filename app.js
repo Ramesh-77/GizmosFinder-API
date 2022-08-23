@@ -17,41 +17,33 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.set('trust proxy', 1)
-// app.use(
-//   cookieSession({
-//     name: "session",
-//     keys: ["gizmos_finder"],
 
-//     // Cookie Options
-//     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-//   })
-// );
-
-// for logging with social medias and google
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-//making connection with front-end
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     methods: "GET, POST, PUT, PATCH, DELETE",
-//     credentials: true,
-//   })
-// );
 
 app.use(cors());
 
-// uploading files and images
 app.use(express.static(__dirname + "/"));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
+    res.status(200).json({});
+  }
+  next();
+});
 
-// const authRouter = require("./routes/auth");
-// app.use("/auth", authRouter);
 
 // import user router
 const userRouter = require("./routes/user");
 app.use("/user", userRouter);
+
+const productCategory = require("./routes/productCategory")
+app.use(productCategory)
+
+
 
 const port = process.env.PORT || 8080;
 const host = process.env.HOST_NAME;
