@@ -10,7 +10,8 @@ const {
   viewHeadphoneProduct,
   viewPhoneProduct,
   viewSingleProduct,
-  searchProduct
+  searchProduct,
+  addToCart
 } = require("../controllers/productCategory");
 const path = require("path");
 const upload = require("../Uploads/upload");
@@ -38,6 +39,9 @@ router.get("/all-headphone", viewHeadphoneProduct);
 
 //single product
 router.get("/single-product/:pid", viewSingleProduct);
+//POST: Add item to cart
+router.post("/add-to-cart", addToCart);
+  
 //delete route for product
 router.delete("/product-delete/:pid", deleteProduct);
 

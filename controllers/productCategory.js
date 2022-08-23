@@ -1,5 +1,6 @@
 const Category = require("../models/ProductCategory");
 const Product = require("../models/Product");
+const Cart = require("../models/Cart")
 
 // category added
 exports.addProductCategory = async (req, res) => {
@@ -142,18 +143,34 @@ exports.deleteProduct = (req, res) => {
 };
 
 // search product
-exports.searchProduct = async(req, res)=>{
-  console.log(req.params.query)
-  const keys = new RegExp(req.params.query, "i")
+exports.searchProduct = async (req, res) => {
+  console.log(req.params.query);
+  const keys = new RegExp(req.params.query, "i");
   // console.log(keys)
   const search = await Product.find({
-    "$or":[
-      {pname: {$in: [keys]}},
-      {categoryName: {$in: [keys]}}
-    ]
+    $or: [{ pname: { $in: [keys] } }, { categoryName: { $in: [keys] } }],
+  });
+
+  res.json(search);
+};
+
+// add to cart
+exports.addToCart = async (req, res) => {
+  await new Cart({
+    productId: req.body.pid,
+    userId: req.body.userId,
+    productQuantity: req.body.productQuantity,
   })
-
-  res.json(search)
-}
-
-
+    .save()
+    .then((data) => {
+      console.log(data);
+      res.status(200).json({
+        success: true,
+        message: "Selected product successfully added to cart",
+        data,
+      });
+    })
+    .catch((err) => {
+      res.status(409).send(err);
+    });
+};
