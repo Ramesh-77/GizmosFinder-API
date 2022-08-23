@@ -81,10 +81,9 @@ exports.viewProduct = async (req, res) => {
     });
 };
 
-
 //only phones
 exports.viewPhoneProduct = async (req, res) => {
-  await Product.find({categoryName: "Phone"})
+  await Product.find({ categoryName: "Phone" })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -95,7 +94,7 @@ exports.viewPhoneProduct = async (req, res) => {
 
 // only laptop
 exports.viewLaptopProduct = async (req, res) => {
-  await Product.find({categoryName: "Laptop"})
+  await Product.find({ categoryName: "Laptop" })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -106,12 +105,24 @@ exports.viewLaptopProduct = async (req, res) => {
 
 // only laptop
 exports.viewHeadphoneProduct = async (req, res) => {
-  await Product.find({categoryName: "Headphone & Earphone"})
+  await Product.find({ categoryName: "Headphone & Earphone" })
     .then((result) => {
       res.status(200).json(result);
     })
     .catch((err) => {
       res.json(err);
+    });
+};
+
+//for single product
+exports.viewSingleProduct = function (req, res) {
+  const id = req.params.pid;
+  Product.findOne({ _id: id })
+    .then(function (result) {
+      res.json(result);
+    })
+    .catch(function () {
+      res.json({ message: "ok invalid" });
     });
 };
 

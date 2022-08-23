@@ -8,7 +8,8 @@ const {
   deleteProduct, 
   viewLaptopProduct,
   viewHeadphoneProduct,
-  viewPhoneProduct
+  viewPhoneProduct,
+  viewSingleProduct
 } = require("../controllers/productCategory");
 const path = require("path");
 const upload = require("../Uploads/upload");
@@ -34,7 +35,8 @@ router.get("/all-laptop", viewLaptopProduct);
 router.get("/all-headphone", viewHeadphoneProduct);
 
 
-
+//single product
+router.get("/single-product/:pid", viewSingleProduct);
 //delete route for product
 router.delete("/product-delete/:pid", deleteProduct);
 module.exports = router;
