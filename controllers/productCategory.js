@@ -140,3 +140,20 @@ exports.deleteProduct = (req, res) => {
       });
     });
 };
+
+// search product
+exports.searchProduct = async(req, res)=>{
+  console.log(req.params.query)
+  const keys = new RegExp(req.params.query, "i")
+  // console.log(keys)
+  const search = await Product.find({
+    "$or":[
+      {pname: {$in: [keys]}},
+      {categoryName: {$in: [keys]}}
+    ]
+  })
+
+  res.json(search)
+}
+
+
