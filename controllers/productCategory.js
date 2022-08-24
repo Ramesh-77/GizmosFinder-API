@@ -193,7 +193,6 @@ exports.deleteProductCart = (req, res) => {
     });
 };
 
-
 exports.updateProductCartQty = async (req, res) => {
   await Cart.findOneAndUpdate(
     { productId: req.params.pid },
@@ -217,5 +216,14 @@ exports.updateProductCartQty = async (req, res) => {
       });
     });
   // console.log(req.body);
-}
+};
 
+exports.deleteProductAfterPayment =  (req, res) => {
+   Cart.deleteOne({ userId: req.body.userId })
+    .then((res) => {
+      console.log("deleted", res);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};

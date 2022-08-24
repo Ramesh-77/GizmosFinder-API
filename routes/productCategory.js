@@ -14,7 +14,8 @@ const {
   addToCart,
   getProductCart,
   deleteProductCart,
-  updateProductCartQty
+  updateProductCartQty,
+  deleteProductAfterPayment
 } = require("../controllers/productCategory");
 const path = require("path");
 const upload = require("../Uploads/upload");
@@ -47,6 +48,9 @@ router.post("/add-to-cart", addToCart);
 router.get("/get-products-cart/:userId", getProductCart);
 
 router.delete("/delete-product-cart/:pid", deleteProductCart);
+
+// delete all products in cart after payment
+router.post("/make-payment/:userId", deleteProductAfterPayment);
 
 // for updating product qty in cart
 router.put("/update-product-qty/:pid", updateProductCartQty);
