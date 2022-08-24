@@ -1,6 +1,6 @@
 const Category = require("../models/ProductCategory");
 const Product = require("../models/Product");
-const Cart = require("../models/Cart")
+const Cart = require("../models/Cart");
 
 // category added
 exports.addProductCategory = async (req, res) => {
@@ -174,3 +174,48 @@ exports.addToCart = async (req, res) => {
       res.status(409).send(err);
     });
 };
+
+//get product
+exports.getProductCart = async (req, res) => {
+  const cart = await Cart.find({ userId: req.params.userId }).populate(
+    "productId"
+  );
+  res.json(cart);
+};
+
+exports.deleteProductCart = (req, res) => {
+  Cart.deleteOne({ _id: req.params.pid })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+
+exports.updateProductCartQty = async (req, res) => {
+  await Cart.findOneAndUpdate(
+    { productId: req.params.pid },
+    {
+      productQuantity: req.body.productQuantity,
+    }
+  )
+    .then((result) => {
+      console.log(req.body);
+      console.log(req.params.pid);
+      console.log(result);
+      res.status(200).json({
+        message: "You have successfully updated product in cart",
+        success: true,
+        data: result,
+      });
+    })
+    .catch(() => {
+      res.status(200).json({
+        message: "something went wrong",
+      });
+    });
+  // console.log(req.body);
+}
+
